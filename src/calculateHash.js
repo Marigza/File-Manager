@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
 import crypto from 'node:crypto';
-import { showCurrentDirrectory } from './navigation.js';
+import { showCurrentDirrectory } from './showCurrentDirectory.js';
 
 export async function calculateHash(pathToFile) {
   fs.readFile(pathToFile)

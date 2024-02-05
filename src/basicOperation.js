@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import fsPromises from 'node:fs/promises';
-import { showCurrentDirrectory } from './navigation.js'
+import { showCurrentDirrectory } from './showCurrentDirectory.js'
 
 export function readFile(pathToFile) {
   const readStream = fs.createReadStream(pathToFile);

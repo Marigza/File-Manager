@@ -1,8 +1,5 @@
 import fs from 'node:fs/promises';
-
-export function showCurrentDirrectory() {
-  process.stdout.write(`\nYou are currently in ${process.cwd()}\n`);
-};
+import { showCurrentDirrectory } from './showCurrentDirectory.js'
 
 export function changeDirectory(path) {
   try {

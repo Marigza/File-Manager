@@ -1,7 +1,7 @@
 import { createBrotliCompress, createBrotliDecompress } from 'node:zlib';
 import fs from 'node:fs';
 import { pipeline } from 'node:stream';
-import { showCurrentDirrectory } from './navigation.js';
+import { showCurrentDirrectory } from './showCurrentDirectory.js';
 
 export function compressFile(pathToFile, pathToDestination) {
   const compressStream = createBrotliCompress();
