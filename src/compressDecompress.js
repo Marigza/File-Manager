@@ -2,6 +2,7 @@ import { createBrotliCompress, createBrotliDecompress } from 'node:zlib';
 import fs from 'node:fs';
 import { pipeline } from 'node:stream';
 import { showCurrentDirrectory } from './showCurrentDirectory.js';
+import { showOperationFailed } from './showErrorMessage.js';
 
 export function compressFile(pathToFile, pathToDestination) {
   const compressStream = createBrotliCompress();
@@ -14,7 +15,7 @@ export function compressFile(pathToFile, pathToDestination) {
     destinationStream,
     err => {
       if (err) {
-        console.log(`\nOperation failed\n`);
+        showOperationFailed();
       }
       showCurrentDirrectory();
     }
@@ -32,7 +33,7 @@ export function decompressFile(pathToFile, pathToDestination) {
     destinationStream,
     err => {
       if (err) {
-        console.log(`\nOperation failed\n`, err);
+        showOperationFailed();
       }
       showCurrentDirrectory();
     }

@@ -1,12 +1,12 @@
 import fs from 'node:fs/promises';
-import { showCurrentDirrectory } from './showCurrentDirectory.js'
+import { showCurrentDirrectory } from './showCurrentDirectory.js';
+import { showOperationFailed } from './showErrorMessage.js';
 
 export function changeDirectory(path) {
   try {
     process.chdir(path);
-    console.log('working dirrectory: ', process.cwd())
   } catch {
-    console.log(`\nOperation failed\n`)
+    showOperationFailed();
   } finally {
     showCurrentDirrectory();
   }

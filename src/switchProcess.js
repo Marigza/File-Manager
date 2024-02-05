@@ -1,9 +1,10 @@
-import { showHomeDirectory, showCurrentDirrectory } from './showCurrentDirectory.js';
+import { showCurrentDirrectory } from './showCurrentDirectory.js';
 import { changeDirectory, showListOfCurrentDirectory } from './navigation.js';
 import { readFile, createEmptyFile, renameFile, copyFile, deleteFile, moveFile } from './basicOperation.js';
 import { getSystemInfo } from './getSystemInfo.js';
 import { calculateHash } from './calculateHash.js';
 import { compressFile, decompressFile } from './compressDecompress.js';
+import { showInvalidInput, showOperationFailed } from './showErrorMessage.js';
 
 const commandData = {
   exit: '.exit',
@@ -34,22 +35,25 @@ export function switchProcess(terminalComand, argumentArr) {
       return process.exit();
 
     case commandData.goUpper:
-
-      console.log(process.cwd())  // TODO fix path here to dependent from home directory
-      const pathDestination = process.cwd().split('\\').slice(0, -1).join('\\');
-      changeDirectory(pathDestination);
+      if (argumentArr.length !== 0) {
+        showInvalidInput();
+      } else {
+        const pathDestination = process.cwd().split('\\').slice(0, -1).join('\\');
+        changeDirectory(pathDestination);
+      }
+      
       break;
 
     case commandData.changeDir:
 
       if (argumentArr.length !== 1) {
-        process.stdout.write('Invalid input\n');
+        showInvalidInput();
         showCurrentDirrectory();
       } else {
         try {
           changeDirectory(argumentArr[0]);
         } catch (err) {
-          console.log(`\nOperation failed\n`)
+          showOperationFailed();
           showCurrentDirrectory();
         }
       }
@@ -57,19 +61,23 @@ export function switchProcess(terminalComand, argumentArr) {
       break;
 
     case commandData.listOfFiles:
-      showListOfCurrentDirectory();
+      if (argumentArr.length !== 0) {
+        showInvalidInput();
+      } else {
+        showListOfCurrentDirectory();
+      }
       break;
 
     case commandData.readFile:
 
       if (argumentArr.length !== 1) {
-        process.stdout.write('Invalid input\n');
+        showInvalidInput();
         showCurrentDirrectory();
       } else {
         try {
           readFile(argumentArr[0]);
         } catch (err) {
-          console.log(`\nOperation failed\n`)
+          showOperationFailed();
           showCurrentDirrectory();
         }
       }
@@ -79,7 +87,7 @@ export function switchProcess(terminalComand, argumentArr) {
     case commandData.creatEmptyFile:
 
       if (argumentArr.length !== 1) {
-        process.stdout.write('Invalid input\n');
+        showInvalidInput();
         showCurrentDirrectory();
       } else {
         createEmptyFile(argumentArr[0]);
@@ -89,7 +97,7 @@ export function switchProcess(terminalComand, argumentArr) {
 
     case commandData.renameFile:
       if (argumentArr.length !== 2) {
-        process.stdout.write('Invalid input\n');
+        showInvalidInput();
         showCurrentDirrectory();
       } else {
         renameFile(argumentArr[0], argumentArr[1]);
@@ -98,7 +106,7 @@ export function switchProcess(terminalComand, argumentArr) {
 
     case commandData.copyFile:
       if (argumentArr.length !== 2) {
-        process.stdout.write('Invalid input\n');
+        showInvalidInput();
         showCurrentDirrectory();
       } else {
         copyFile(argumentArr[0], argumentArr[1]);
@@ -107,7 +115,7 @@ export function switchProcess(terminalComand, argumentArr) {
 
     case commandData.deleteFile:
       if (argumentArr.length !== 1) {
-        process.stdout.write('Invalid input\n');
+        showInvalidInput();
         showCurrentDirrectory();
       } else {
         deleteFile(argumentArr[0]);
@@ -116,7 +124,7 @@ export function switchProcess(terminalComand, argumentArr) {
 
     case commandData.moveFile:
       if (argumentArr.length !== 2) {
-        process.stdout.write('Invalid input\n');
+        showInvalidInput();
         showCurrentDirrectory();
       } else {
         moveFile(argumentArr[0], argumentArr[1]);
@@ -126,7 +134,7 @@ export function switchProcess(terminalComand, argumentArr) {
     case commandData.getSystemInfo:
 
       if (argumentArr.length !== 1) {
-        process.stdout.write('Invalid input\n');
+        showInvalidInput();
       } else {
         getSystemInfo(argumentArr[0]);
       }
@@ -136,7 +144,7 @@ export function switchProcess(terminalComand, argumentArr) {
 
     case commandData.calculateHash:
       if (argumentArr.length !== 1) {
-        process.stdout.write('Invalid input\n');
+        showInvalidInput();
         showCurrentDirrectory();
       } else {
         calculateHash(argumentArr[0]);
@@ -145,7 +153,7 @@ export function switchProcess(terminalComand, argumentArr) {
 
     case commandData.compressFile:
       if (argumentArr.length !== 2) {
-        process.stdout.write('Invalid input\n');
+        showInvalidInput();
         showCurrentDirrectory();
       } else {
         compressFile(argumentArr[0], argumentArr[1]);
@@ -154,7 +162,7 @@ export function switchProcess(terminalComand, argumentArr) {
 
     case commandData.decompressFile:
       if (argumentArr.length !== 2) {
-        process.stdout.write('Invalid input\n');
+        showInvalidInput();
         showCurrentDirrectory();
       } else {
         decompressFile(argumentArr[0], argumentArr[1]);
@@ -162,7 +170,7 @@ export function switchProcess(terminalComand, argumentArr) {
       break;
 
     default:
-      process.stdout.write(`\nInvalid input\n`);
+      showInvalidInput();
       return showCurrentDirrectory()
   }
 }

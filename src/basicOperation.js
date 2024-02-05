@@ -1,11 +1,12 @@
 import fs from 'node:fs';
 import fsPromises from 'node:fs/promises';
-import { showCurrentDirrectory } from './showCurrentDirectory.js'
+import { showCurrentDirrectory } from './showCurrentDirectory.js';
+import { showOperationFailed } from './showErrorMessage.js';
 
 export function readFile(pathToFile) {
   const readStream = fs.createReadStream(pathToFile);
   readStream.on('error', () => {
-    console.log('Operation failed');
+    showOperationFailed();
     showCurrentDirrectory();
   })
   readStream.on('data', chunk => {
@@ -20,7 +21,7 @@ export function createEmptyFile(fileName) {
       showCurrentDirrectory();
     })
     .catch(() => {
-      console.log('Operation failed');
+      showOperationFailed();
       showCurrentDirrectory();
     })
 }
@@ -33,7 +34,7 @@ export function renameFile(pathToFile, newFileName) {
   const newPathtoFile = workingDirectory.concat(`/${newFileName}`)
   fsPromises.rename(pathToFile, newPathtoFile)
     .catch(err => {
-      console.log('Operation failed')
+      showOperationFailed();
     })
     .finally(() => showCurrentDirrectory())
 }
@@ -52,7 +53,7 @@ export async function copyFile(pathToFile, pathToNewDirectory) {
         sourceStream.pipe(destinationStream);
       })
   } catch {
-    console.log('Operation failed');
+    showOperationFailed();
   } finally {
     showCurrentDirrectory();
   }
@@ -63,7 +64,7 @@ export async function deleteFile(pathToFile) {
   try {
     await fsPromises.rm(pathToFile)
   } catch {
-    console.log('Operation failed')
+    showOperationFailed();
   } finally {
     showCurrentDirrectory();
   }
@@ -85,7 +86,7 @@ export async function moveFile(pathToFile, pathToNewDirectory) {
     await fsPromises.rm(pathToFile)
 
   } catch {
-    console.log('Operation failed');
+    showOperationFailed();
   } finally {
     showCurrentDirrectory();
   }

@@ -1,5 +1,5 @@
 import { switchProcess } from './switchProcess.js';
-import { showCurrentDirrectory } from './showCurrentDirectory.js'
+import { showHomeDirectory } from './showCurrentDirectory.js';
 
 try {
 
@@ -14,10 +14,9 @@ try {
     throw new Error('Invalid input');
   }
 
-  process.stdout.write(`Welcome to the File Manager, ${userName}!\n`);
-  //showHomeDirectory();
-  showCurrentDirrectory(); //TODO fix start dir and update navigation functions
-
+  console.log('\x1b[32m%s\x1b[0m', `Welcome to the File Manager, ${userName}!\n`);
+  showHomeDirectory();
+  
   process.stdin.on('data', (data) => {
     const dataTrimmed = data.toString().trim();
     const arrayOfData = dataTrimmed.split(' ');
@@ -33,7 +32,7 @@ try {
   });
 
   process.on('exit', () => {
-    process.stdout.write(`\nThank you for using File Manager, ${userName}, goodbye!\n`)
+    console.log('\x1b[32m%s\x1b[0m', `\nThank you for using File Manager, ${userName}, goodbye!\n`)
   });
 
 } catch (err) {
