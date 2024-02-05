@@ -1,7 +1,10 @@
 import os from 'node:os';
+import fs from 'node:fs/promises';
+import crypto from 'node:crypto';
 import { showHomeDirectory, showCurrentDirrectory, changeDirectory, showListOfCurrentDirectory } from './navigation.js';
 import { readFile, createEmptyFile, renameFile, copyFile, deleteFile, moveFile } from './basicOperation.js';
 import { getSystemInfo } from './getSystemInfo.js';
+import { calculateHash } from './calculateHash.js';
 
 try {
 
@@ -158,6 +161,12 @@ try {
         break;
       
       case commandData.calculateHash:
+        if (argumentArr.length !== 1) {
+          process.stdout.write('Invalid input\n');
+          showCurrentDirrectory();
+        } else {
+          calculateHash(argumentArr[0]);
+        }
         break;
       
       case commandData.compressFile:
@@ -179,30 +188,6 @@ try {
   process.on('exit', () => {
     process.stdout.write(`\nThank you for using File Manager, ${userName}, goodbye!\n`)
   });
-
-  // function getSystemInfo(comand) {
-  //   switch (comand) {
-
-  //     case '--EOL':
-  //       console.log(JSON.stringify(os.EOL));
-  //       break;
-  //     case '--cpus':
-  //       console.log(`overall amount of CPUS ${os.cpus().length}`);
-  //       os.cpus().forEach(({ model }) => { console.log(model) });
-  //       break;
-  //     case '--homedir':
-  //       console.log(os.homedir())
-  //       break;
-  //     case '--username':
-  //       console.log(os.userInfo().username)
-  //       break;
-  //     case '--architecture':
-  //       console.log(os.arch())
-  //       break;
-  //     default:
-  //       process.stdout.write(`\nInvalid input\n`);
-  //   }
-  // };
 
 } catch (err) {
   throw new Error('Invalid input.\nTo start file manager, please use: "npm run start -- --username=your_username"')
