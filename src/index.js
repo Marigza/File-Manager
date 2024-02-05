@@ -1,5 +1,7 @@
+import os from 'node:os';
 import { showHomeDirectory, showCurrentDirrectory, changeDirectory, showListOfCurrentDirectory } from './navigation.js';
-import { readFile, createEmptyFile, renameFile, copyFile, deleteFile, moveFile } from './basicOperation.js'
+import { readFile, createEmptyFile, renameFile, copyFile, deleteFile, moveFile } from './basicOperation.js';
+import { getSystemInfo } from './getSystemInfo.js';
 
 try {
 
@@ -17,7 +19,14 @@ try {
     renameFile: 'rn',
     copyFile: 'cp',
     moveFile: 'mv',
-    deleteFile: 'rm'
+    deleteFile: 'rm',
+
+    getSystemInfo: 'os',
+
+    calculateHash: 'hash',
+    
+    compressFile: 'compress',
+    decompressFile: 'decompress',
   }
 
   let userName;
@@ -137,6 +146,26 @@ try {
         }
         break;
       
+      case commandData.getSystemInfo:
+
+        if (argumentArr.length !== 1) {
+          process.stdout.write('Invalid input\n');
+        } else {
+          getSystemInfo(argumentArr[0]);
+        }
+        showCurrentDirrectory();
+
+        break;
+      
+      case commandData.calculateHash:
+        break;
+      
+      case commandData.compressFile:
+        break;
+      
+      case commandData.decompressFile:
+        break;
+      
       default:
         process.stdout.write(`\nInvalid input\n`);
         return showCurrentDirrectory()
@@ -150,6 +179,30 @@ try {
   process.on('exit', () => {
     process.stdout.write(`\nThank you for using File Manager, ${userName}, goodbye!\n`)
   });
+
+  // function getSystemInfo(comand) {
+  //   switch (comand) {
+
+  //     case '--EOL':
+  //       console.log(JSON.stringify(os.EOL));
+  //       break;
+  //     case '--cpus':
+  //       console.log(`overall amount of CPUS ${os.cpus().length}`);
+  //       os.cpus().forEach(({ model }) => { console.log(model) });
+  //       break;
+  //     case '--homedir':
+  //       console.log(os.homedir())
+  //       break;
+  //     case '--username':
+  //       console.log(os.userInfo().username)
+  //       break;
+  //     case '--architecture':
+  //       console.log(os.arch())
+  //       break;
+  //     default:
+  //       process.stdout.write(`\nInvalid input\n`);
+  //   }
+  // };
 
 } catch (err) {
   throw new Error('Invalid input.\nTo start file manager, please use: "npm run start -- --username=your_username"')
