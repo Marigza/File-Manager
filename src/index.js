@@ -1,10 +1,8 @@
-import os from 'node:os';
-import fs from 'node:fs/promises';
-import crypto from 'node:crypto';
 import { showHomeDirectory, showCurrentDirrectory, changeDirectory, showListOfCurrentDirectory } from './navigation.js';
 import { readFile, createEmptyFile, renameFile, copyFile, deleteFile, moveFile } from './basicOperation.js';
 import { getSystemInfo } from './getSystemInfo.js';
 import { calculateHash } from './calculateHash.js';
+import { compressFile, decompressFile } from './compressDecompress.js';
 
 try {
 
@@ -170,9 +168,21 @@ try {
         break;
       
       case commandData.compressFile:
+        if (argumentArr.length !== 2) {
+          process.stdout.write('Invalid input\n');
+          showCurrentDirrectory();
+        } else {
+          compressFile(argumentArr[0], argumentArr[1]);
+        }
         break;
       
       case commandData.decompressFile:
+        if (argumentArr.length !== 2) {
+          process.stdout.write('Invalid input\n');
+          showCurrentDirrectory();
+        } else {
+          decompressFile(argumentArr[0], argumentArr[1]);
+        }
         break;
       
       default:
@@ -188,6 +198,42 @@ try {
   process.on('exit', () => {
     process.stdout.write(`\nThank you for using File Manager, ${userName}, goodbye!\n`)
   });
+
+  // function compressFile(pathToFile, pathToDestination) {
+  //   const compressStream = createBrotliCompress();
+  //   const sourceStream = fs.createReadStream(pathToFile, 'utf-8');
+  //   const destinationStream = fs.createWriteStream(pathToDestination);
+
+  //   pipeline(
+  //     sourceStream,
+  //     compressStream,
+  //     destinationStream,
+  //     err => {
+  //       if (err) {
+  //         console.log(`\nOperation failed\n`);
+  //       }
+  //       showCurrentDirrectory();
+  //     }
+  //   )
+  // }
+
+  // function decompressFile(pathToFile, pathToDestination) {
+  //   const decompressStream = createBrotliDecompress();
+  //   const sourceStream = fs.createReadStream(pathToFile);
+  //   const destinationStream = fs.createWriteStream(pathToDestination);
+
+  //   pipeline(
+  //     sourceStream,
+  //     decompressStream,
+  //     destinationStream,
+  //     err => {
+  //       if (err) {
+  //         console.log(`\nOperation failed\n`, err);
+  //       }
+  //       showCurrentDirrectory();
+  //     }
+  //   )
+  // }
 
 } catch (err) {
   throw new Error('Invalid input.\nTo start file manager, please use: "npm run start -- --username=your_username"')
